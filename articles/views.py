@@ -1,6 +1,9 @@
-from django.http import HttpResponse
+from django.shortcuts import render
+
+from .models import Article
 
 
 # Create your views here.
 def index(request):
-    return HttpResponse("Hello, Django! This is articles app.")
+    context = {'articles_list': Article.objects.all()}
+    return render(request, 'articles/index.html', context)
