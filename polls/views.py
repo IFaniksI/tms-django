@@ -1,22 +1,29 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import Question, Choice
+from django.views import generic
 from .forms import QuestionForm
+from .models import Question, Choice
 
 
 # Create your views here.
-def index(request):
-    questions = Question.objects \
+class IndexView(generic.ListView):
+    template_name = "polls/index.html"
+    context_object_name = "latest_question_list"
+
+    def get_queryset(self):
+        return Question.objects \
                     .filter(status=Question.Status.APPROVED) \
                     .order_by('-pub_date')[:5]
-    context = {'latest_question_list': questions}
-    return render(request, 'polls/index.html', context)
 
 
-def detail(request, question_id: int):
-    question = get_object_or_404(Question, id=question_id, status=Question.Status.APPROVED)
-    context = {'question': question}
-    return render(request, 'polls/detail.html', context)
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = "polls/detail.html"
+
+    def get_queryset(self):
+        return Question.objects \
+            .filter(status=Question.Status.APPROVED) \
+            .get(id=self.kwargs['question_id'])
 
 
 def vote(request, question_id: int):
@@ -33,10 +40,9 @@ def vote(request, question_id: int):
     return redirect('polls:results', question.id)
 
 
-def results(request, question_id: int):
-    question = get_object_or_404(Question, id=question_id)
-    context = {'question': question}
-    return render(request, 'polls/results.html', context)
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = "polls/results.html"
 
 
 def create_question(request):
