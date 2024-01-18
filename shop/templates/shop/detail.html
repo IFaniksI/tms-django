@@ -1,0 +1,11 @@
+{% extends 'polls/base.html' %}
+
+{% block title %} Product {% endblock %}
+
+{% block body %}
+    <a href="{% url 'shop:category' product.category.id %}">{{ product.category.category_name }}</a>
+    <h1>{{ product.product_name }}</h1>
+    <p>{{ product.description }}</p>
+    <p>${{ product.price }}</p>
+    <a href="{% url 'shop:index' %}" id="button">Go to main page</a>
+{% endblock %}

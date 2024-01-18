@@ -1,0 +1,19 @@
+{% extends 'polls/base.html' %}
+
+{% block title %}Shop APP{% endblock %}
+
+{% block body %}
+    {% if categories %}
+        <h1 style="font-size: 36px">Shop:</h1>
+        {% for category in categories %}
+            <h3><a href="{% url 'shop:category' category.id %}">{{ category.category_name }}</a></h3>
+            <ul>
+                {% for product in category.product.all %}
+                    <li><a href="{% url 'shop:detail' product.id %}">{{ product.product_name }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    {% else %}
+        <p>No shop are available.</p>
+    {% endif %}
+{% endblock %}

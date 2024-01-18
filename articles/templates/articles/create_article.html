@@ -1,0 +1,11 @@
+{% extends 'polls/base.html' %}
+
+{% block title %}Articles APP{% endblock %}
+
+{% block body %}
+    <form action="{% url 'articles:create_article' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create</button>
+    </form>
+{% endblock %}

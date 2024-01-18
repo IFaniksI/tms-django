@@ -1,17 +1,17 @@
-<html lang="en">
-<head>
-    <title>Articles</title>
-</head>
-<body>
-    <h1>Articles</h1>
+{% extends 'polls/base.html' %}
+
+{% block title %}Articles APP{% endblock %}
+
+{% block body %}
     {% if articles_list %}
+        <h1 style="font-size: 36px">Articles:</h1>
         <ul>
-            {% for article in articles_list %}
-                <li>{{ article.title }}</li>
-            {%endfor%}
+            {% for article in articles_list|dictsort:'title' %}
+                <li><a href="{% url 'articles:detail' article.id %}">{{ article.title }}</a></li>
+            {% endfor %}
         </ul>
-    {% else%}
-        <p>No articles available.</p>
+    {% else %}
+        <p>No articles are available.</p>
     {% endif %}
-</body>
-</html>
+    <a href="{% url 'articles:create_article' %}" id="button">create new article</a>
+{% endblock %}

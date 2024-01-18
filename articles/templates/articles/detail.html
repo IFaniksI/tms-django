@@ -1,0 +1,15 @@
+{% extends 'polls/base.html' %}
+{% block title %} Article {% endblock %}
+
+{% block body %}
+    <h1>{{ article.title }}</h1>
+    <p>{{ article.text }}</p>
+    <p>Author: {{ article.author }}</p>
+    <p>Likes: {{ article.likes }}</p>
+    <form method="post" action="{% url 'articles:like' article.id %}">
+        {% csrf_token %}
+        <input type="hidden" name="article_id" value="{{ article.id }}"/>
+        <button type="submit">like</button>
+    </form>
+    <p><a href="{% url 'articles:index' %}" id="button">Go to main page</a></p>
+{% endblock %}
